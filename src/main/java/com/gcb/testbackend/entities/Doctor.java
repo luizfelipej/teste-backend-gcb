@@ -20,6 +20,7 @@ public class Doctor implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String name;
 	private String crm;
 	private Integer firstDoctorExpertise;
@@ -177,7 +178,6 @@ public class Doctor implements Serializable {
 		}
 	}
 	
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

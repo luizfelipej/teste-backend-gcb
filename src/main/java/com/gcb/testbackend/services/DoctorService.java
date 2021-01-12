@@ -1,9 +1,11 @@
 package com.gcb.testbackend.services;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.swing.text.MaskFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -86,7 +88,12 @@ public class DoctorService {
 	}
 	
 	public Doctor insert(Doctor obj) {
+		activeToTrue(obj);
 		buscacep(obj);
+		cepFormat(obj);
+		crmFormat(obj);
+		telFixFormat(obj);
+		telCelFormat(obj);
 		return repository.save(obj);
 	}
 
@@ -113,9 +120,13 @@ public class DoctorService {
 	private void updateData(Doctor entity, Doctor obj) {
 		entity.setName(obj.getName());
 		entity.setCrm(obj.getCrm());
+		crmFormat(entity);
 		entity.setTelFix(obj.getTelFix());
+		telFixFormat(entity);
 		entity.setTelCel(obj.getTelCel());
+		telCelFormat(entity);
 		entity.setCep(obj.getCep());
+		cepFormat(entity);
 		entity.setFirstDoctorExpertise(obj.getFirstDoctorExpertise());
 		entity.setSecondDoctorExpertise(obj.getSecondDoctorExpertise());
 		buscacep(entity);
@@ -148,5 +159,40 @@ public class DoctorService {
 			e.printStackTrace();
 		}
 	}
+	
+	public void cepFormat(Doctor obj) {
+		String cep = formatString(obj.getCep(),"#####-###");
+		obj.setCep(cep);
+	}
+	
+	public void telFixFormat(Doctor obj) {
+		String telFix = formatString(obj.getTelFix(),"(##)####-####");
+		obj.setTelFix(telFix);
+	}
+	
+	public void telCelFormat(Doctor obj) {
+		String telCel = formatString(obj.getTelCel(),"(##)#####-####");
+		obj.setTelCel(telCel);
+	}
+	
+	public void crmFormat(Doctor obj) {
+		String crm = formatString(obj.getCrm(),"##.###.##");
+		obj.setCrm(crm);
+	}
+	
+	public void activeToTrue(Doctor obj) {
+		obj.activeSetTrue();
+	}
+	
+    public static String formatString(String value, String pattern) {
+        MaskFormatter mf;
+        try {
+            mf = new MaskFormatter(pattern);
+            mf.setValueContainsLiteralCharacters(false);
+            return mf.valueToString(value);
+        } catch (ParseException ex) {
+            return value;
+        }
+    }
 
 }

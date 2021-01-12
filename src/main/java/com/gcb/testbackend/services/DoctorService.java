@@ -14,6 +14,8 @@ import com.gcb.testbackend.entities.Doctor;
 import com.gcb.testbackend.repositories.DoctorRepository;
 import com.gcb.testbackend.services.exceptions.DatabaseException;
 import com.gcb.testbackend.services.exceptions.ResourceNotFoundException;
+import com.gcb.testbackend.viacep.Endereco;
+import com.gcb.testbackend.viacep.ServicoDeCep;
 
 @Service
 public class DoctorService {
@@ -82,8 +84,9 @@ public class DoctorService {
 			Integer SecondExpertise) {
 		return repository.findByFirstDoctorExpertiseOrSecondDoctorExpertise(firstExpertise, SecondExpertise);
 	}
-
+	
 	public Doctor insert(Doctor obj) {
+		buscacep(obj);
 		return repository.save(obj);
 	}
 
@@ -113,6 +116,8 @@ public class DoctorService {
 		entity.setTelFix(obj.getTelFix());
 		entity.setTelCel(obj.getTelCel());
 		entity.setCep(obj.getCep());
+		entity.setFirstDoctorExpertise(obj.getFirstDoctorExpertise());
+		entity.setSecondDoctorExpertise(obj.getSecondDoctorExpertise());
 
 	}
 	
@@ -124,6 +129,22 @@ public class DoctorService {
 			return repository.save(entity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
+		}
+	}
+	
+	public void buscacep(Doctor obj){
+		String cep = obj.getCep();
+		try {
+			Endereco endereco = ServicoDeCep.buscaEnderecoPelo(cep);
+			obj.setComplemento(endereco.getComplemento());
+			obj.setBairro(endereco.getBairro());
+			obj.setLogradouro(endereco.getLogradouro());
+			obj.setLocalidade(endereco.getLocalidade());
+			obj.setUf(endereco.getUf());	
+		} catch (DatabaseException e) {
+			throw new DatabaseException("Nao foi possivel inserir o cep");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

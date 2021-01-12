@@ -115,8 +115,6 @@ public class DoctorResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	//===============================
-	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Doctor> softDelete(@PathVariable Long id){
 		Doctor obj = service.findById(id);
@@ -136,6 +134,4 @@ public class DoctorResource {
 		obj = service.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
-	
-
 }

@@ -118,6 +118,7 @@ public class DoctorService {
 		entity.setCep(obj.getCep());
 		entity.setFirstDoctorExpertise(obj.getFirstDoctorExpertise());
 		entity.setSecondDoctorExpertise(obj.getSecondDoctorExpertise());
+		buscacep(entity);
 
 	}
 	

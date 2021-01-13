@@ -18,7 +18,4 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>{
 	List<Doctor> findByBairroIgnoreCase(String bairro);
 	List<Doctor> findByLocalidadeIgnoreCase(String localidade);
 	List<Doctor> findByUfIgnoreCase(String uf);
-	List<Doctor> findByFirstDoctorExpertise(Integer firstExpertise);
-	List<Doctor> findBySecondDoctorExpertise(Integer secondExpertise);
-	List<Doctor> findByFirstDoctorExpertiseOrSecondDoctorExpertise(Integer firstExpertise, Integer secondExpertise);
 }

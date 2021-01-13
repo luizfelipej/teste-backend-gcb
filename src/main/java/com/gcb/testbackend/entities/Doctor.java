@@ -1,30 +1,33 @@
 package com.gcb.testbackend.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
 
 import com.gcb.testbackend.entities.enums.DoctorExpertise;
 
 @Entity
-@Where(clause="is_active=1")
+@Table(name = "tb_doctor")
+//@Where(clause = "is_active=1")
 public class Doctor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String name;
 	private String crm;
-	private Integer firstDoctorExpertise;
-	private Integer secondDoctorExpertise;
 	private String telFix;
 	private String telCel;
 	private String cep;
@@ -33,22 +36,22 @@ public class Doctor implements Serializable {
 	private String bairro;
 	private String localidade;
 	private String uf;
-	
-	@Column(name="is_active")
+
+	@Column(name = "is_active")
 	private Boolean active;
 
+	@OneToMany(mappedBy = "responsible")
+	private List<ExpertiseCategory> responsible = new ArrayList<>();
 
 	public Doctor() {
 
 	}
 
-	public Doctor(Long id, String name, String crm, DoctorExpertise firstDoctorExpertise, DoctorExpertise secondDoctorExpertise, String telFix, String telCel, String cep) {
+	public Doctor(Long id, String name, String crm, String telFix, String telCel, String cep) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.crm = crm;
-		setFirstDoctorExpertise(firstDoctorExpertise);
-		setSecondDoctorExpertise(secondDoctorExpertise);
 		this.telFix = telFix;
 		this.telCel = telCel;
 		this.cep = cep;
@@ -143,7 +146,7 @@ public class Doctor implements Serializable {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-	
+
 	public Boolean getActive() {
 		return active;
 	}
@@ -155,29 +158,16 @@ public class Doctor implements Serializable {
 	public void activeSetFalse() {
 		this.active = false;
 	}
-	
-	
-	//========== Expertise Enum get/set
-	public DoctorExpertise getFirstDoctorExpertise() {
-		return DoctorExpertise.valueOf(firstDoctorExpertise);
+
+	public List<DoctorExpertise> getExpertiseCategory() {
+		List<DoctorExpertise> expertiseList = new ArrayList<>();
+		for (ExpertiseCategory x : responsible) {
+			expertiseList.add(x.getDoctorExpertise());
+		}
+		return expertiseList;
+
 	}
 
-	public void setFirstDoctorExpertise(DoctorExpertise doctorExpertise) {
-		if (doctorExpertise != null) {
-			this.firstDoctorExpertise = doctorExpertise.getCode();
-		}
-	}
-	
-	public DoctorExpertise getSecondDoctorExpertise() {
-		return DoctorExpertise.valueOf(secondDoctorExpertise);
-	}
-
-	public void setSecondDoctorExpertise(DoctorExpertise doctorExpertise) {
-		if (doctorExpertise != null) {
-			this.secondDoctorExpertise = doctorExpertise.getCode();
-		}
-	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

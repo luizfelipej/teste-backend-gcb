@@ -73,19 +73,6 @@ public class DoctorService {
 	public List<Doctor> findByUf(String uf) {
 		return repository.findByUfIgnoreCase(uf);
 	}
-
-	public List<Doctor> findByFirstDoctorExpertise(Integer expertise) {
-		return repository.findByFirstDoctorExpertise(expertise);
-	}
-
-	public List<Doctor> findBySecondDoctorExpertise(Integer expertise) {
-		return repository.findBySecondDoctorExpertise(expertise);
-	}
-
-	public List<Doctor> findByFirstDoctorExpertiseOrSecondDoctorExpertise(Integer firstExpertise,
-			Integer SecondExpertise) {
-		return repository.findByFirstDoctorExpertiseOrSecondDoctorExpertise(firstExpertise, SecondExpertise);
-	}
 	
 	public Doctor insert(Doctor obj) {
 		activeToTrue(obj);
@@ -127,8 +114,6 @@ public class DoctorService {
 		telCelFormat(entity);
 		entity.setCep(obj.getCep());
 		cepFormat(entity);
-		entity.setFirstDoctorExpertise(obj.getFirstDoctorExpertise());
-		entity.setSecondDoctorExpertise(obj.getSecondDoctorExpertise());
 		buscacep(entity);
 
 	}

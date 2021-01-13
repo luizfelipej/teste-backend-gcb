@@ -97,24 +97,6 @@ public class DoctorResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@GetMapping(value = "/first-expertises/{firstDoctorExpertise}")
-	public ResponseEntity<List<Doctor>> findByFirstDoctorExpertise(@PathVariable Integer firstDoctorExpertise) {
-		List<Doctor> list = service.findByFirstDoctorExpertise(firstDoctorExpertise);
-		return ResponseEntity.ok().body(list);
-	}
-	
-	@GetMapping(value = "/second-expertises/{secondDoctorExpertise}")
-	public ResponseEntity<List<Doctor>> findBySecondDoctorExpertise(@PathVariable Integer secondDoctorExpertise) {
-		List<Doctor> list = service.findBySecondDoctorExpertise(secondDoctorExpertise);
-		return ResponseEntity.ok().body(list);
-	}
-	
-	@GetMapping(value = "/expertises/{firstDoctorExpertise}/{secondDoctorExpertise}")
-	public ResponseEntity<List<Doctor>> findByFirstDoctorExpertiseOrSecondDoctorExpertise(@PathVariable Integer firstDoctorExpertise, @PathVariable Integer secondDoctorExpertise) {
-		List<Doctor> list = service.findByFirstDoctorExpertiseOrSecondDoctorExpertise(firstDoctorExpertise, secondDoctorExpertise);
-		return ResponseEntity.ok().body(list);
-	}
-	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Doctor> softDelete(@PathVariable Long id){
 		Doctor obj = service.findById(id);
